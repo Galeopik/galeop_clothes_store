@@ -29,7 +29,7 @@ class CatalogView(TemplateView):
         'color': lambda queryset, value: queryset.filter(color__iexact=value),
         'min_price': lambda queryset, value: queryset.filter(price__gte=value),
         'max_price': lambda queryset, value: queryset.filter(price__lte=value),
-        'size': lambda queryset, value: queryset.filter(product_size__size__name=value)
+        'size': lambda queryset, value: queryset.filter(product_sizes__size__name=value)
     }
 
     def get_context_data(self, **kwargs):
@@ -80,14 +80,14 @@ class CatalogView(TemplateView):
         if request.headers.get('HX-Request'):
             if context.get('show_search'):
                 return TemplateResponse(
-                    request, 
-                    'main/search_input.html', 
+                    request,
+                    'main/search_input.html',
                     context
                 )
             elif context.get('reset_search'):
                 return TemplateResponse(request, 'main/search_button.html', {})
             template = (
-                'main/filter_model.html'
+                'main/filter_modal.html'
                 if request.GET.get('show_filters') == 'true'
                 else 'main/catalog.html'
             )
@@ -107,7 +107,7 @@ class ProductDetailView(DetailView):
         context['categories'] = Category.objects.all()
         context['related_products'] = Product.objects.filter(
             category=product.category
-            ).exclude(id=product.id[:4])
+            ).exclude(id=product.id)
         context['current_category'] = product.category.slug
         return context
 
