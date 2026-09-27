@@ -1,9 +1,10 @@
-from django.shortcuts import get_object_or_404
-from django.views.generic import TemplateView, DetailView
-from django.http import HttpResponse
-from django.template.response import TemplateResponse
-from .models import Category, Product, Size
 from django.db.models import Q
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.template.response import TemplateResponse
+from django.views.generic import DetailView, TemplateView
+
+from .models import Category, Product, Size
 
 
 class IndexView(TemplateView):
